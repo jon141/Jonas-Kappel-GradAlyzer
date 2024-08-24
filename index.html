@@ -67,6 +67,9 @@
 
     <pre><code id="pythonCode">
 
+
+
+
 import tkinter as tk
 import customtkinter as ctk
 from tkinter import ttk
@@ -156,6 +159,9 @@ def user_name_button_action():
         under_welcome_lable.configure(text='gib dein Geburtsdatum ein!', text_color='black')
         under_welcome_lable.grid(columnspan=2, row=1)
         birthday_frame.grid(columnspan=2, row=2)
+        #username_frame.grid_forget()
+        #welcome_lable.configure(text=('Hi ' + username + ','))
+        #under_welcome_lable.configure(text='triff deine Kurswahl!')
         json.dump(user_dates_dict, open('user_dates.json', 'w'), indent=4)
 
 
@@ -260,6 +266,8 @@ selection_frame.grid_columnconfigure(3, weight=1)
 def checkbox_5_c_event(i):
     checkbox_text_5c = checkbox_list_5c[i].cget("text")
     checkbox_status_5c = var_list_5c[i].get()
+    print(f"Text der Checkbox {i}: {checkbox_text_5c}")
+    print(f"Checkbox Status {i}: {'Aktiviert' if checkbox_status_5c == 'on' else 'Deaktiviert'}")
     if checkbox_status_5c == 'on':
         selection_5_c.append(checkbox_text_5c)
     elif checkbox_status_5c == 'off':
@@ -269,7 +277,8 @@ def checkbox_5_c_event(i):
 def checkbox_3_c_event(j):
     checkbox_text_3c = checkbox_list_3c[j].cget("text")
     checkbox_status = var_list_3c[j].get()
-
+    print(f"Text der Checkbox {j}: {checkbox_text_3c}")
+    print(f"Checkbox Status {j}: {'Aktiviert' if checkbox_status == 'on' else 'Deaktiviert'}")
     if checkbox_status == 'on':
         selection_3_c.append(checkbox_text_3c)
     elif checkbox_status == 'off':
@@ -279,7 +288,8 @@ def checkbox_3_c_event(j):
 def checkbox_2_c_event(k):
     checkbox_text_2c = checkbox_list_2c[k].cget("text")
     checkbox_status_2c = var_list_2c[k].get()
-
+    print(f"Text der Checkbox {k}: {checkbox_text_2c}")
+    print(f"Checkbox Status {k}: {'Aktiviert' if checkbox_status_2c == 'on' else 'Deaktiviert'}")
     if checkbox_status_2c == 'on':
         selection_2_c.append(checkbox_text_2c)
     elif checkbox_status_2c == 'off':
@@ -382,6 +392,9 @@ def save_course_selection():
             loading_lable.configure()
             loading_lable.start()
 
+            #loading_lable = ctk.CTkProgressBar(root, orientation='horizontal', height=50, corner_radius=2)
+            #loading_lable.grid(pady=300, padx=300)
+            #loading_lable.start(1)
             root.after(1000, normal_startup)
             root.after(1000, loading_lable.grid_forget)
 
@@ -398,6 +411,7 @@ def save_course_selection():
 save_button = ctk.CTkButton(selection_frame, width=100, text='save courses', fg_color=('#b02121', '#871b1b'), text_color=('white', 'white'), hover_color=('#871b1b', '#b02121'), command=save_course_selection, border_width=1, corner_radius=0)
 save_button.grid(row=16, column=2, sticky='nwes')
 
+###fg_color=('orange', 'purple'), text_color=('black', 'white'), hover_color=('yellow', 'violet')
 
 def first_start():
     ctk.set_default_color_theme('dark-blue')
@@ -423,6 +437,25 @@ def first_start():
 
 
 #-------first-start-wird-abgeschlossen-open-1-gesetzt-reset-all-mit-user_dates_dict["open"]=0-setzen
+
+
+
+#try:
+#    print('try')
+#    user_dates_dict = json.load(open('user_dates.json'))
+#    opend = user_dates_dict["open"]
+#    print(opend)
+#    print(user_dates_dict["open"])
+#    if opend == '0' or opend == 0:
+#        first_start()
+#    else:
+#        normal_startup()
+#
+#except:
+#    print('expect')
+#    first_start()
+
+
 
 def normal_startup():
 
@@ -498,15 +531,28 @@ def normal_startup():
                                 )
     mode_button.grid(row=0, column=0, sticky='nw', padx=5, pady=5)
 
+
+
+    #colortestbutton = ctk.CTkButton(root, text='jdsk fjsk fks')
+    #colortestbutton.grid(row=3, sticky='nw', padx=5)
+
+    ### in settings frame in frame Farbauswahl, oder direkt, weil es nur ein punkt ist
+
     #-----------farnmodus-ändern-beim-neustart-choicebar
     def color_callback(choice):
+        ##print("optionmenu dropdown clicked:", choice)
         settings_dict['mode_color'] = choice
         with open('settings.json', 'w', encoding='utf-8') as f:
             json.dump(settings_dict, f, ensure_ascii=False, indent=4)
 
+    #optionmenu = ctk.CTkOptionMenu(head_frame, values=["green", "blue", "dark-blue"], command=color_callback, fg_color='white', corner_radius=0, text_color='black', width=50)
+    #optionmenu.set(settings_dict['mode_color'])
+    #optionmenu.grid(row=0, column=7, sticky='nw', padx=5, pady=5)
+
     def date_strichschreibweise_in_punktschreibweise(date_srich):
         date_strich_list = date_srich.split('-')
         date_punkt = date_strich_list[2] + '.' + date_strich_list[1] + '.' + date_strich_list[0]
+        ##print(date_punkt)
         return date_punkt
 
     def day_english_to_deutsch(week_day):
@@ -521,13 +567,18 @@ def normal_startup():
 
     today = date.today()
     wochentag_name = today.strftime("%A")
-
+    ##print(today)
+    ##print(wochentag_name)
     today_punkt = date_strichschreibweise_in_punktschreibweise(str(today))
 
     wochentag_name_deutsch = day_english_to_deutsch(wochentag_name)
 
     date_label = ctk.CTkLabel(head_frame, text=str(wochentag_name_deutsch) + ' ' + str(today_punkt), font=('Arial', 15))
-        
+    #date_label.grid(row=0, column=12, padx=5, pady=5)
+    ##print(root.title())
+    #root.title(root.title() + '                                                                                                                                                      ' + wochentag_name_deutsch + ' ' + today_punkt)
+
+
     #-----------Uhr-auf-seite
     def update_time_small():
         current_time_small = datetime.now().strftime('%H:%M:%S')
@@ -535,6 +586,7 @@ def normal_startup():
         root.after(1000, update_time_small)
 
     time_label_small = ctk.CTkLabel(head_frame, font=('Helvetica', 15), fg_color='transparent') #'Helvetica'
+    #time_label.grid(row=1, padx=5, pady=5, sticky=tk.W)                            # Uhr label entpacken
     time_label_small.grid(column=10, row=0)
 
     update_time_small()
@@ -551,6 +603,7 @@ def normal_startup():
 
         root_big_uhr = ctk.CTkToplevel()
         root_big_uhr.title("Uhr")
+        #root_big_uhr.geometry("415x120+1460+0")
         root_big_uhr.geometry("415x120+0+0")
 
         root_big_uhr.minsize(415, 120)
@@ -586,6 +639,13 @@ def normal_startup():
 
     #------Einstellungen-öffnen-settingsframe-darstellen-wenn-knopf-gedrückt
 
+    #def place_all_frames():
+    #    settings_frame.place(x=1000, y=1000)
+    #    stundenplan_frame.place(x=1000, y=1000)
+    #    notenübersicht_frame.place(x=1000, y=1000)
+    #    hauptmenue_frame.place(x=5, y=100)
+
+
     def open_settings():
         hauptmenue_frame.grid_forget()
         notenübersicht_frame.grid_forget()
@@ -593,6 +653,13 @@ def normal_startup():
         dokumentation_frame.grid_forget()
 
         settings_frame.grid()
+
+
+        #hauptmenue_frame.place_configure(x=1000, y=1000)
+        #stundenplan_frame.place_configure(x=1000, y=1000)
+        #notenübersicht_frame.place_configure(x=1000, y=1000)
+        #settings_frame.after(400)
+        #settings_frame.place_configure(x=5, y=100)
 
         root.title("GradAlyzer - Settings")
 
@@ -604,6 +671,13 @@ def normal_startup():
         dokumentation_frame.grid_forget()
 
         hauptmenue_frame.grid(row=1, padx=5, pady=5, sticky='nw')
+
+
+        #settings_frame.place_configure(x=1000, y=1000)
+        #stundenplan_frame.place_configure(x=1000, y=1000)
+        #notenübersicht_frame.place_configure(x=1000, y=1000)
+        #hauptmenue_frame.after(400)
+        #hauptmenue_frame.place_configure(x=5, y=100)
 
         root.title("GradAlyzer - Hauptmenü")
 
@@ -617,6 +691,13 @@ def normal_startup():
 
         notenübersicht_frame.grid(row=1, padx=5, pady=5, sticky='nw')
 
+
+        #settings_frame.place_configure(x=1000, y=1000)
+        #hauptmenue_frame.place_configure(x=1000, y=1000)
+        #stundenplan_frame.place_configure(x=1000, y=1000)
+        #notenübersicht_frame.after(400)
+        #notenübersicht_frame.place_configure(x=5, y=100)
+
         root.title("GradAlyzer - Notenübersicht")
 
     def open_stundenplan():
@@ -625,6 +706,12 @@ def normal_startup():
         notenübersicht_frame.grid_forget()
         dokumentation_frame.grid_forget()
         stundenplan_frame.grid(row=1, padx=5, pady=5, sticky='nw')
+
+        #settings_frame.place_configure(x=1000, y=1000)
+        #hauptmenue_frame.place_configure(x=1000, y=1000)
+        #notenübersicht_frame.place_configure(x=1000, y=1000)
+        #stundenplan_frame.after(400)
+        #stundenplan_frame.place_configure(x=5, y=100)
 
         root.title("GradAlyzer - Stundenplan")
 
@@ -686,12 +773,23 @@ def normal_startup():
     alle_ergebnisse = noten_dict['alle_ergebnisse'].copy()
     alle_termine = termine_dict['alle_termine'].copy()
 
+    ##print('1, ', Faecher_Ergebnisse, '2, ', Termine_f)
+    #Faecher_Ergebnisse.append('Sonstiges')
+
     Termine_f.append('Ausflug')
     Termine_f.append('Sonstiges')
-        
-    Termintypen = basic_dates_dict['termin_type']
 
+    ##print('Ergebnisse', Faecher_Ergebnisse)
+    ##print('Termine   ', Termine_f)
+
+
+    Termintypen = basic_dates_dict['termin_type']
+    ##print(Termintypen)
+
+
+    #
     # ----------------Ergebnisse-eintragen----------------------
+    #
 
     grade_types = basic_dates_dict["grade_type"]
     points = basic_dates_dict["points"]
@@ -705,6 +803,7 @@ def normal_startup():
         global_a += 1
         if global_a == len(Faecher_Ergebnisse):
             global_a = 0
+        ##print(global_a)
 
     def minus_update_global_a():
         global global_a
@@ -712,10 +811,17 @@ def normal_startup():
         if global_a == -1:
             global_a = len(Faecher_Ergebnisse)-1
 
+        ##print(global_a)
+
+
+
     def up_down_mousewheel_a(event):
+        ##print('somethig')
         if event.delta > 0:
+            ##print('nach oben')
             minus_update_global_a()
         elif event.delta < 0:
+            ##print('nach unten')
             plus_update_global_a()
         Fachauswahl_combobox.set(Faecher_Ergebnisse[global_a])
 
@@ -726,6 +832,7 @@ def normal_startup():
         global_s += 1
         if global_s == len(grade_types):
             global_s = 0
+        ##print(global_s)
     def minus_update_global_s():
         global global_s
         global_s -= 1
@@ -733,11 +840,15 @@ def normal_startup():
             global_s = len(grade_types)-1
         if global_s == len(grade_types):
             global_s = 0
+        ##print(global_s)
 
     def up_down_mousewheel_s(event):
+        ##print('somethig')
         if event.delta > 0:
+            ##print('nach oben')
             minus_update_global_s()
         elif event.delta < 0:
+            ##print('nach unten')
             plus_update_global_s()
         Noten_art_auswahl_combobox.set(grade_types[global_s])
 
@@ -748,17 +859,23 @@ def normal_startup():
         global_d += 1
         if global_d == len(points):
             global_d = 0
+        ##print(global_d)
 
     def minus_update_global_d():
         global global_d
         global_d -= 1
         if global_d == -1:
             global_d = len(points)-1
+        ##print(global_d)
 
     def up_down_mousewheel_d(event):
+        #print(points)
+        ##print('somethig')
         if event.delta > 0:
+            ##print('nach oben')
             minus_update_global_d()
         elif event.delta < 0:
+            ##print('nach unten')
             plus_update_global_d()
         Punkteauswahl_combobox.set(points[global_d])
 
@@ -772,6 +889,7 @@ def normal_startup():
     Fachauswahl_combobox = ctk.CTkComboBox(ergebnisse_eintragen_frame, values=Faecher_Ergebnisse, corner_radius=2)
     Noten_art_auswahl_combobox = ctk.CTkComboBox(ergebnisse_eintragen_frame, values=grade_types, corner_radius=2)
     Punkteauswahl_combobox = ctk.CTkComboBox(ergebnisse_eintragen_frame, values=points, corner_radius=2)
+
 
     #ergebnisse_eintragen_lable = ctk.CTkLabel(ergebnisse_eintragen_frame, text='Ergebnisse:', corner_radius=4, width=90, fg_color='green')
     #ergebnisse_eintragen_lable.grid(row=0, column=0, padx=0, pady=0, sticky="nw")
@@ -809,6 +927,8 @@ def normal_startup():
             else:
                 update_frame = None
 
+            ##print(update_frame)
+
             entry_num = ctk.CTkEntry(update_frame, placeholder_text='', width=50, corner_radius=0, border_width=0, border_color=('black', 'white'), justify="center")
             entry_num.insert(0, number_to_add)
             entry_num.grid(row=int(number_to_add)+1, column=0)
@@ -827,8 +947,14 @@ def normal_startup():
 
             print('GFS or Abi add to table')
 
+            ##print(entries[current_fach])
+
+            ##print('abi or gfs hinzufügen')
+            ##print(tab_to_update, frame_to_update, number_to_add, result_to_add)
             sonstiges_frame_ = sonstiges_frames[tab_to_update]
             frame_list = table_frames[tab_to_update]
+            ##print('len frame list', len(frame_list))
+            ##print(frame_list)
             update_frame = frame_list[4]
             sonstiges_frame_.grid(row=0, column=5, padx=(0, 5), sticky='nw')
 
@@ -839,6 +965,7 @@ def normal_startup():
             else:
                 type_text = 'GFS'
 
+
             if ("Abi schriftlich" in noten_dict[tab_to_update].keys() or "Abi muendlich" in noten_dict[tab_to_update].keys()) and "GFS" in noten_dict[tab_to_update].keys():
                 row_in_sonstiges_frame = 2
                 print(row_in_sonstiges_frame)
@@ -846,8 +973,15 @@ def normal_startup():
                 row_in_sonstiges_frame = 1
                 print(row_in_sonstiges_frame)
 
+
+            ##print('len = 4: frame muss erstellt werden')
+
             table_entries = []
             row_entries = []
+
+            ##print('            j                 j         ')
+
+            #row = 4
 
             type_entry = ctk.CTkEntry(update_frame, placeholder_text='', width=50, corner_radius=0, border_width=0, border_color=('black', 'white'), justify="center")
             type_entry.insert(0, type_text)
@@ -865,21 +999,33 @@ def normal_startup():
 
             table_entries.append(row_entries)
 
+            #table_frames[current_fach].append(sonstiges_tabelle_frame)
             entries[current_fach].append(table_entries)
+
+
 
 
     def ergebnisse_in_dict():
         fach = Fachauswahl_combobox.get()
         art = Noten_art_auswahl_combobox.get()
         point = Punkteauswahl_combobox.get()
+        ##print(fach, art, point)
 
+        ##print('t', grade_types)
         sonstiges_appender = False
+        ##print('was ist mit hier')
 
         if art == 'GFS' or art == 'Abi schriftlich' or art == 'Abi muendlich': # oder einfach if art in ['GFS', 'Abi'...]
+            ##print('art = GFS or Abi')
+
             gfs_in_noten = 'GFS' not in noten_dict[fach]
             abi_in_noten = 'Abi schriftlich' not in noten_dict[fach]
             abi_muend_in_noten = 'Abi muendlich' not in noten_dict[fach]
+            ##print(gfs_in_noten, abi_in_noten)
 
+    #        if 'GFS' not in noten_dict[fach] or 'Abipruefung' not in noten_dict[fach]: ###!!!hier muss der fehler mit den bedingungen sein. -> gelöst
+    #            print('GFS or Abi not in noten dict')
+    #
             def gfs_or_abi_hinzufügen():
                 noten_dict[fach][art] = point
                 ergebniss_string = str(fach + ' ' + art + ': ' + point + 'P')
@@ -888,6 +1034,12 @@ def normal_startup():
                 sonstiges_appender = True
                 add_result_to_table(fach, art, 'None', point)
 
+                # hier kann man die Tabelle erweitern
+
+
+
+
+            ##print('GFS or Abi not in noten dict')
             if art == 'GFS':
                 if gfs_in_noten == True:
                     gfs_or_abi_hinzufügen()
@@ -897,19 +1049,38 @@ def normal_startup():
             elif art == 'Abi muendlich':
                 if abi_muend_in_noten == True:
                     gfs_or_abi_hinzufügen()
+            #print('GFS' in noten_dict[fach])
+
+                #print(noten_dict[fach][art])
+            #    noten_dict[fach][art] = point
+            #    ergebniss_string = str(fach + ' ' + art + ': ' + point + 'P')
+            #    alle_ergebnisse.insert(0, ergebniss_string)
+            #    noten_dict['alle_ergebnisse'] = alle_ergebnisse
+            #    sonstiges_appender = True
+                #sonstiges_counter = noten_dict['sonstiges_counter']
+                #sonstiges_counter += 1
+                #noten_dict['sonstiges_counter'] = sonstiges_counter
 
         elif art in ["Klassenarbeit", "Test", "muendlich", "Praesentation"]:
+            ##print('kommt es hier überhaupt an?')
             for i in range(len(grade_types) - 1):
                 if art == grade_types[i]:
                     type_counter_true = type_counter[i]
 
+                    ##print('schlüsselwort', type_counter_true)
+
                     nummer = int(noten_dict[fach].get(type_counter_true, 0))
+                    ##print('nummer', nummer, type(nummer))
 
                     noten_dict[fach][type_counter_true] = str(nummer + 1)
 
                     noten_dict[fach][art + ' ' + str(nummer + 1)] = point
 
+                   # ka_number = nummer+1
+                   # print('ka number', ka_number)
+
                     ergebniss_string = str(fach + ' ' + art + ' ' + str((nummer + 1)) + ': ' + point + 'P')
+                    ##print('string erg', ergebniss_string)
                     alle_ergebnisse.insert(0, ergebniss_string)
                     noten_dict['alle_ergebnisse'] = alle_ergebnisse
                     add_result_to_table(fach, art, str((nummer + 1)), point)
@@ -921,20 +1092,30 @@ def normal_startup():
                 noten_dict[fach]['sonstige_counter'] = sonstiges_counter
                 sonstiges_appender = False
 
+        #print(noten_dict)
         with open('noten.json', 'w', encoding='utf-8') as f:
             json.dump(noten_dict, f, ensure_ascii=False, indent=4)
         notenschnitte_ausrechnen_heading_buttons_aktualisieren(fach)
 
 
+        #def update_ergebnisse_scrollbar():
+        #    for i in range(5):
+        #        print('')
         update_ergebnisse_scrollbar()
+
+        #update_klassenarbeit_tabelle() # Tabelle aktualisieren
 
 
     ergebnisse_eintragen_button = ctk.CTkButton(ergebnisse_eintragen_frame, text='ENTER', width=20, command=ergebnisse_in_dict, corner_radius=2)
     ergebnisse_eintragen_button.grid(row=0, column=4, padx=2, pady=0, sticky="w")
 
+
+
     #------------Datum-Auslesen----------------
     today = date.today()
     wochentag_name = today.strftime("%A")
+
+
 
     #----------------Termine-eintragen-Frame-erstellen-und-skalieren
 
@@ -951,9 +1132,12 @@ def normal_startup():
 
     date_values = []
 
+    ##print(today)
     date_list = str(today).split('-')
+    ##print(date_list)
     year = date_list[0]
     month = date_list[1]
+    ##print(year, month)
     for i in range(8):
         month_ = int(month) + i
         year_ = year
@@ -967,22 +1151,29 @@ def normal_startup():
     global_i, global_j, global_k = 0, 0, 0
 
 
+    # scrollbare_combobox_termin_fach: mit i
+
     def plus_update_global_i():
         global global_i
         global_i += 1
         if global_i == len(Termine_f):
             global_i = 0
+        ##print(global_i)
 
     def minus_update_global_i():
         global global_i
         global_i -= 1
         if global_i == -1:
             global_i = len(Termine_f)-1
+        ##print(global_i)
 
     def up_down_mousewheel_i(event):
+        ##print('somethig')
         if event.delta > 0:
+            ##print('nach oben')
             minus_update_global_i()
         elif event.delta < 0:
+            ##print('nach unten')
             plus_update_global_i()
         termin_fach_combobox.set(Termine_f[global_i])
 
@@ -993,16 +1184,21 @@ def normal_startup():
         global_j += 1
         if global_j == len(Termintypen):
             global_j = 0
+        ##print(global_j)
     def minus_update_global_j():
         global global_j
         global_j -= 1
         if global_j == -1:
             global_j = len(Termintypen)-1
+        ##print(global_j)
 
     def up_down_mousewheel_j(event):
+        ##print('somethig')
         if event.delta > 0:
+            ##print('nach oben')
             minus_update_global_j()
         elif event.delta < 0:
+            ##print('nach unten')
             plus_update_global_j()
         termintyp_combobox.set(Termintypen[global_j])
 
@@ -1013,17 +1209,22 @@ def normal_startup():
         global_k += 1
         if global_k == len(date_values):
             global_k = 0
+        ##print(global_k)
 
     def minus_update_global_k():
         global global_k
         global_k -= 1
         if global_k == -10:
             global_k = len(date_values)-1
+        ##print('globalk',global_k)
 
     def up_down_mousewheel_k(event):
+        ##print('somethig')
         if event.delta > 0:
+            ##print('nach oben')
             minus_update_global_k()
         elif event.delta < 0:
+            ##print('nach unten')
             plus_update_global_k()
         datums_combobox.set(date_values[global_k])
 
@@ -1031,6 +1232,8 @@ def normal_startup():
     termin_fach_combobox = ctk.CTkComboBox(termine_eintragen_frame, values=Termine_f, corner_radius=2)
     termintyp_combobox = ctk.CTkComboBox(termine_eintragen_frame, values=Termintypen, corner_radius=2)
     datums_combobox = ctk.CTkComboBox(termine_eintragen_frame, values=date_values, corner_radius=2)
+    #ergebnisse_eintragen_lable = ctk.CTkLabel(termine_eintragen_frame, text='Termine:', corner_radius=4, width=90, fg_color='green')
+    #ergebnisse_eintragen_lable.grid(row=0, column=0, sticky='nw', padx=0)
     ergebnisse_eintragen_lable_button = ctk.CTkButton(termine_eintragen_frame, text='Termine:', corner_radius=2, width=90, fg_color=('#b02121','#871b1b'), hover_color=('#b02121','#871b1b'))
     ergebnisse_eintragen_lable_button.grid(row=0, column=0, sticky='nw', padx=(0, 2))
 
@@ -1057,6 +1260,8 @@ def normal_startup():
 
         with open('termine.json', 'r') as file:
             termine_dict = json.load(file)
+        print(termine_dict)
+
         with open('basic_dates.json', 'r') as file:
             basic_dates_dict = json.load(file)
         term_type_counter = basic_dates_dict["term_type_counter"]
@@ -1065,11 +1270,16 @@ def normal_startup():
         typ = termintyp_combobox.get()
         date = datums_combobox.get()
         date_split = date.split('-')
+        ##print(date_split)
 
         datum_in_schön = date_split[2] + '.' + date_split[1] + '.' + date_split[0]
 
         if date_split[2] != '':
+            ##print('valid date.')
+            ##print(fach, typ, date)
+
             if typ in ["Klassenarbeit", "Test", "muendliche Pruefung", "Praesentation"] and fach in basic_dates_dict['all_subjects']: ### 'muendliche Pruefung' gibts auch nicht mehr zur Auswahl
+                ##print('234')
                 for i in range(len(Termintypen) - 1):
                     if typ == Termintypen[i]:
                         type_counter_true = term_type_counter[i]
@@ -1080,23 +1290,32 @@ def normal_startup():
                         termin_string = str(datum_in_schön + ': ' + fach + ' ' + typ + ' ' + str((nummer + 1)))
                         alle_termine.insert(0, termin_string)
                         termine_dict['alle_termine'] = alle_termine
+                        ##print(termine_dict)
 
             elif typ in ['GFS', 'Abi schriftlich', 'Abi muendlich', 'Ausflug']: ### 'Ausflug gar nicht mehr zur auswahl???'
+                ##print('sf s fs s ')
+
                 def abi_termin_appender():
                     termine_dict[fach][typ] = date
                     termin_string = str(datum_in_schön + ': ' + fach + ' ' + typ)
                     alle_termine.insert(0, termin_string)
                     termine_dict['alle_termine'] = alle_termine
+                    ##print(termine_dict)
                 def abi_termin_changer():
                     old_date = termine_dict[fach][typ]
+                    ##print(old_date)
                     date_strichschreibweise_in_punktschreibweise(old_date)
                     search_old = date_strichschreibweise_in_punktschreibweise(old_date) + ': ' + fach + ' ' + typ
+                    ##print(search_old)
                     if search_old in alle_termine:
                         index = alle_termine.index(search_old)
+                    ##print('index', index)
 
                     termin_string = str(datum_in_schön + ': ' + fach + ' ' + typ)
                     del alle_termine[index]
+                    ##print(alle_termine)
                     alle_termine.insert(index, termin_string)
+                    ##print(alle_termine)
                     termine_dict[fach][typ] = date
                     termine_dict['alle_termine'] = alle_termine
 
@@ -1131,6 +1350,7 @@ def normal_startup():
                 termin_string = str(datum_in_schön + ': ' + fach + '-' + typ)
                 alle_termine.insert(0, termin_string)
                 termine_dict['alle_termine'] = alle_termine
+                ##print(termine_dict)
 
             update_termine_scrollbar()
             with open('termine.json', 'w', encoding='utf-8') as f:
@@ -1195,21 +1415,29 @@ def normal_startup():
     ergebnisse_scroll_heading_button.grid(row=0, sticky='nw', pady=(5,0))
 
     def update_ergebnisse_scrollbar():
+        #print('alle termine', alle_termine)
+        ##print('alle ergebnisse', alle_ergebnisse)
 
         ergebnisse_darstellen_frame = ctk.CTkScrollableFrame(termine_ergebnisse_darstellen_frame, width=250, height=0, corner_radius=2, fg_color=('white', '#1D1E1E'))
+    #ergebnisse_darstellen.grid(column=2, padx=5, pady=5, sticky='ne')
 
         for i in range(len(alle_ergebnisse)):
             ergebnis_lable = ctk.CTkLabel(ergebnisse_darstellen_frame, text=alle_ergebnisse[i], font=('Arial', 12), height=24)
             ergebnis_lable.grid(row=i, sticky='w') ### vielleicht auch 'e'
         ergebnisse_darstellen_frame.grid(row=1, column=0, padx=0, pady=0, sticky='nw')
 
+        #ergebnisse_darstellen_frame.place(x=300, y=300)
+
     update_ergebnisse_scrollbar()
 
     termine_scroll_heading_button = ctk.CTkButton(termine_ergebnisse_darstellen_frame, text='Termine:', fg_color=('#b02121','#871b1b'), hover_color=('#b02121','#871b1b'), width=268, corner_radius=2, font=('Arial', 15, 'bold'), text_color='white')
     termine_scroll_heading_button.grid(row=2, sticky='nw', pady=(0,0))
     def update_termine_scrollbar():
+        ##print('alle termine', alle_termine)
+        #print('alle ergebnisse', alle_ergebnisse)
 
         termine_darstellen_frame = ctk.CTkScrollableFrame(termine_ergebnisse_darstellen_frame, width=250, height=200, fg_color=('white', '#1D1E1E'), corner_radius=2)
+    #ergebnisse_darstellen.grid(column=2, padx=5, pady=5, sticky='ne')
 
         for i in range(len(alle_termine)):
             termin_lable = ctk.CTkLabel(termine_darstellen_frame, text=alle_termine[i], font=('Arial', 12), height=24)
@@ -1227,6 +1455,7 @@ def normal_startup():
     #--------hauptmenü-entpacken---------
     ergebnisse_termine_eintragen_frame.grid(row=1, padx=5, pady=5, sticky='nw')
     hauptmenue_frame.grid_propagate(False)  # Deaktiviere die automatische Anpassung der Größe
+    #hauptmenue_frame.grid(pady=5, padx=5, sticky='nw')
     hauptmenue_frame.configure(width=head_lenght, height=600)
 
 
@@ -1239,6 +1468,10 @@ def normal_startup():
 
     alle_fächer = user_dates_dict['all-courses'].copy()
     alle_ergebnisse = noten_dict['alle_ergebnisse'].copy()
+    #alle_fächer.insert(3, 'Gesammt')
+    ##print(alle_fächer)
+
+
 
     notenübersicht_frame = ctk.CTkFrame(root, height=700, width=900)
     notenübersicht_frame.grid_propagate(False)
@@ -1262,6 +1495,7 @@ def normal_startup():
         entry_contents_gfs_abi = []
         frame_counter = 0
         for table_frame in table_frames[active_tab]:
+            ##print('table frame',table_frame)
             if frame_counter == 0:
                 for widget in table_frame.winfo_children():
                     info = widget.grid_info()
@@ -1293,8 +1527,23 @@ def normal_startup():
         return entry_contents_ka, entry_contents_muend, entry_contents_test, entry_contents_prae, entry_contents_gfs_abi
 
     def print_entry_contents():
+        print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
         entry_contents_ka, entry_contents_muend, entry_contents_test,  entry_contents_prae, entry_contents_gfs_abi = find_entries_in_active_tab_right_column()
-
+        print(entry_contents_ka)
+        print(entry_contents_test)
+        print(entry_contents_prae)
+        print(entry_contents_muend)
+        print(entry_contents_gfs_abi)
+        ##for content in entry_contents_ka:
+        ##    print(f"KA: {content}")
+        ##for content2 in entry_contents_test:
+        ##    print(f"Test: {content2}")
+        ##for content3 in entry_contents_muend:
+        ##    print(f"Muend: {content3}")
+        ##for content4 in entry_contents_prae:
+        ##    print(f"Prae: {content4}")
+        ##for content5 in entry_contents_gfs_abi:
+        ##    print(f"GFS: {content5}")
         active_tab = tab_system.get()
         ##print(active_tab)
         del entry_contents_ka[1:2]
@@ -1302,13 +1551,28 @@ def normal_startup():
         del entry_contents_prae[1:2]
         del entry_contents_muend[1:2]
         del entry_contents_gfs_abi[0:2]
+        print(entry_contents_ka)
+        print(entry_contents_test)
+        print(entry_contents_prae)
+        print(entry_contents_muend)
+        print('entry contents gfs abi', entry_contents_gfs_abi)
 
 
+        ##print('linefinder141')
         entry_contents_ka_valid_value_test = entry_contents_ka.copy()[1:-1]
         entry_contents_test_valid_value_test = entry_contents_test.copy()[1:-1]
         entry_contents_prae_valid_value_test = entry_contents_prae.copy()[1:-1]
         entry_contents_muend_valid_value_test = entry_contents_muend.copy()[1:-1]
 
+
+
+        #entry_contents_gfs_abi_valid_value_test = entry_contents_gfs_abi.copy()[1:-1]
+        ##print('viel test zeugs')
+        print(entry_contents_ka_valid_value_test)
+        print(entry_contents_test_valid_value_test)
+        print(entry_contents_prae_valid_value_test)
+        print(entry_contents_muend_valid_value_test)
+        #print(entry_contents_gfs_abi_valid_value_test)
 
         all_valid_value_test_list = entry_contents_ka_valid_value_test + entry_contents_muend_valid_value_test + entry_contents_test_valid_value_test + entry_contents_prae_valid_value_test #+ entry_contents_gfs_abi_valid_value_test
         print(all_valid_value_test_list)
@@ -1319,7 +1583,10 @@ def normal_startup():
                 element_in_int = int(all_valid_value_test_list[element_in_all_valid_value_test_list])
             all_values_valid = True
         except:
+            ##print('')
+            ##print('ist leider false und somit gibt es falsche werte in der tabelle außer in der letzten zeile, die wurde nicht berücksichtigt')
             all_values_valid = False
+            print('falsche werte')
 
         if all_values_valid == True:
             if active_tab in user_dates_dict['5-courses']:
@@ -1345,11 +1612,19 @@ def normal_startup():
                 else:
                     entry_contents_abi = entry_contents_abi + entry_contents_gfs_abi[2:]
                     entry_contents_gfs = entry_contents_gfs + entry_contents_gfs_abi[:2]
-
+#
+                #if 'GFS' in entry_contents_abi_:
+                #    zwischen = entry_contents_abi
+                #    entry_contents_abi_ = entry_contents_gfs_
+                #    entry_contents_gfs_ = zwischen
+                #entry_contents_gfs = entry_contents_abi + entry_contents_abi_
+                #entry_contents_gfs = entry_contents_gfs + entry_contents_gfs_
+#
                 del entry_contents_abi[1:2]
                 del entry_contents_gfs[1:2]
                 print(entry_contents_abi, '-', entry_contents_gfs) # ['GFS', '-'] - ['Abi schriftlich', '14']
             elif 'GFS' in entry_contents_gfs_abi:
+                #entry_contents_abi = []
                 entry_contents_gfs = entry_contents_gfs + entry_contents_gfs_abi
                 del entry_contents_gfs[1:2]
                 print(entry_contents_gfs, 'entery contents gfs')
@@ -1360,7 +1635,13 @@ def normal_startup():
                 del entry_contents_abi[1:2]
                 print(entry_contents_abi, 'entery contents abi') # ['Abi schriftlich', '15']
 
+
+
+
+
             all_entry_contents = [entry_contents_ka, entry_contents_muend, entry_contents_test, entry_contents_prae, entry_contents_abi, entry_contents_gfs]
+
+            ##print('all entry contents ----------------------------- checkpoint------------------problem ------------präsentation', all_entry_contents)
 
             for i in range(6):
                 ##print('i',i)
@@ -1370,24 +1651,33 @@ def normal_startup():
                 print(i, all_entry_contents, 'all entry contents')
                 print(i, content_of_type, 'content of type')
                 print(type_counter, 'type counter')
+                ##print('content of type--------------------------------', content_of_type)
                 if len(content_of_type) > 1:
                     content_type = content_of_type[0]
                     print(i, content_type, 'content type')
                 if len(content_of_type) > 1: #content_of_type != []:
+                    ##print(content_type)
                     if content_type == 'Klassenarbeit ' or content_type == 'muendlich ' or content_type == 'Test ' or content_type == 'Praesentation ':
+                        ##print('content type----------------------------------------', content_type)
                         for j in range(len(content_of_type)-1):
                             note_number = j+1
                             search_replace_destiny = str(content_type) + str(note_number)
+                            ##print('search_replace_destiny', search_replace_destiny)
+                            ##print('note_number',note_number)
 
                             noten_dict[active_tab][search_replace_destiny] = content_of_type[j+1]
 
                             for index, entry in enumerate(alle_ergebnisse):
                                 if search_replace_destiny in entry:
+                                    ##print(f"'{search_replace_destiny}' found at index {index}")
                                     break
                             del alle_ergebnisse[index]
                             alle_ergebnisse.insert(index, str(active_tab + ' ' + search_replace_destiny + ': ' + content_of_type[int(j+1)] + 'P'))
+                            #print('neu', alle_ergebnisse)
 
                             noten_dict['alle_ergebnisse'] = alle_ergebnisse
+
+                        ##print('content of type (schauen, ob das letzte element ein - ist) #######################################################################', content_of_type)
 
                         delete_last = None
 
@@ -1397,47 +1687,77 @@ def normal_startup():
                         except:
                             delete_last = True
 
+                        #if content_of_type[-1] == '-': #man könnte hier noch die Bedingung für einen Löschungsmode machen, der auch aktiviert sein muss, oder dass das die reihe in der tabelle destroyd wird
                         if delete_last == True:#type(content_of_type[-1]) != int:
+                            print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>löschungsfall>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+                            ##print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~löschungsfall ist eingetreten, ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+                            ##print(type_counter, 'jfks jfkdsj fkds fjlkdsj fkdsjflkdsjflkdsjfkds jflkds fjlkds fjlksa')
+                            #point_of_delete = noten_dict[active_tab][content_type + str(note_number)]
+                            ##print('note number---------------------------------------', note_number)
+                            ##print('noten dict vorher +++++++++++++++++++++++++++++++++++++++++++++++++++++', noten_dict)
+                            ##print(noten_dict[active_tab][type_counter])
                             noten_dict[active_tab][type_counter] = str(int(noten_dict[active_tab][type_counter]) - 1)
+                            ##print(noten_dict[active_tab][type_counter])
+                            ##print('note number', note_number)
                             del noten_dict[active_tab][content_type + str(note_number)]
 
+                            ##print('noten dict nachher ++++++++++++++++++++++++++++++++++++++', noten_dict)
 
 
                             search_replace_destiny = str(active_tab) + ' ' + str(content_type) + str(note_number) + ': -P'
+                            ##print('searach repalceh destigit', search_replace_destiny)
 
                             for index, entry in enumerate(alle_ergebnisse):
                                 if search_replace_destiny in entry:
+                                    ##print(f"'{search_replace_destiny}' found at index {index}")
                                     break
                             del alle_ergebnisse[index]
                             update_ergebnisse_scrollbar()
 
+
+                            ###-----------erweiterte-Logik-für-Tabelle-löschen-----
+                            ##print(table_frames[active_tab])
                             if type_counter == 'ka_counter':
                                 table_frame = (table_frames[active_tab])[0]
                                 for widget in table_frame.winfo_children():
                                     info = widget.grid_info()
                                     if info['row'] == int(note_number) + 1:  # Filter for right column (column index 1) # (noten_dict[active_tab][type_counter]
                                         widget.destroy()
-
+                                        ##print('ka destroyed mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
+                                    #if isinstance(widget, ctk.CTkEntry) and info['row'] == int(note_number) + 1:
+                                    #    widget.destroy()
                             if type_counter == 'muend_counter':
                                 table_frame = (table_frames[active_tab])[1]
                                 for widget in table_frame.winfo_children():
                                     info = widget.grid_info()
+                                    ##print(info)
                                     if info['row'] == int(note_number) + 1:  # Filter for right column (column index 1)
                                         widget.destroy()
-
+                                    #if isinstance(widget, ctk.CTkEntry) and info['row'] == int(note_number) + 1:
+                                    #    widget.destroy()
+                                    #    print('muend destroyed mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
                             if type_counter == 'test_counter':
                                 table_frame = (table_frames[active_tab])[2]
                                 for widget in table_frame.winfo_children():
                                     info = widget.grid_info()
+                                    ##print(info)
                                     if info['row'] == int(note_number) + 1:  # Filter for right column (column index 1)
                                         widget.destroy()
+                                    #if isinstance(widget, ctk.CTkEntry) and info['row'] == int(note_number) + 1:
+                                    #    widget.destroy()
+                                    #    print('test destroyed mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
                             if type_counter == 'prae_counter':
                                 table_frame = (table_frames[active_tab])[3]
                                 for widget in table_frame.winfo_children():
                                     info = widget.grid_info()
                                     if info['row'] == int(note_number) + 1:  # Filter for right column (column index 1) #entfernt isinstance(widget, ctk.CTkEntry) and
                                         widget.destroy()
+                                        ##print('prae destroyed mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
+                                    #if isinstance(widget, ctk.CTkEntry) and info['row'] == int(note_number) + 1:
+                                    #    widget.destroy()
 
+
+                            ##print(entries)
                             notenschnitte_ausrechnen_heading_buttons_aktualisieren(active_tab)
 
 
@@ -1449,20 +1769,26 @@ def normal_startup():
                     elif content_type == 'GFS' or content_type == 'Abi schriftlich' or content_type == 'Abi muendlich':
                         if len(content_of_type) >= 2:
                             print(content_of_type, 'content of type', type(content_of_type))
+                            ##print('content type ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++', content_type)
                             search_replace_destiny = str(content_type)
+                            ##print(search_replace_destiny)
                             noten_dict[active_tab][search_replace_destiny] = content_of_type[1]
 
                             for index, entry in enumerate(alle_ergebnisse):
                                 if search_replace_destiny in entry:
+                                    ##print(f"'{search_replace_destiny}' found at index {index}")
                                     break
                             del alle_ergebnisse[index]
                             alle_ergebnisse.insert(index, str(active_tab + ' ' + search_replace_destiny + ': ' + content_of_type[1] + 'P'))
+                            ##print('neu', alle_ergebnisse)
 
                             try:
                                 last_element_inter = int(content_of_type[-1])
                                 delete_last = False
                             except:
                                 delete_last = True
+
+
 
                             if delete_last == True:
                                 print('löschungsfall gfs or abi')
@@ -1489,6 +1815,11 @@ def normal_startup():
                                         row_to_delete = x
                                 print('row to delete', row_to_delete)
 
+
+
+
+                                #if isinstance(widget, ctk.CTkEntry) and info['column'] == 1:  # Filter for right column (column index 1)
+
                                 for widget in table_frame.winfo_children():
                                     info = widget.grid_info()
                                     print(info)
@@ -1513,15 +1844,22 @@ def normal_startup():
                                         gfs_abi_tabelle_reihenfolge_liste.append(widget.get())
                                 if len(gfs_abi_tabelle_reihenfolge_liste) == 0:
                                     sonstiges_frames[active_tab].grid_forget()
+                                    #table_frame.grid_forget()
+
+
 
                                 point_of_delete = noten_dict[active_tab][content_type]
+                                #print('note number-----------------------------------------------------------------------------------------------', note_number)
 
                                 del noten_dict[active_tab][content_type]
+                                #noten_dict[active_tab][type_counter] = str(int(noten_dict[active_tab][type_counter]) - 1)
 
                                 search_replace_destiny = str(active_tab) + ' ' + str(content_type) + ': -P'
+                                ##print('searach repalceh destigit', search_replace_destiny)
 
                                 for index, entry in enumerate(alle_ergebnisse):
                                     if search_replace_destiny in entry:
+                                        ##print(f"'{search_replace_destiny}' found at index {index}")
                                         break
                                 del alle_ergebnisse[index]
 
@@ -1532,7 +1870,10 @@ def normal_startup():
                 json.dump(noten_dict, file, ensure_ascii=False, indent=4)###wurde um eins nach links eingerückt
             notenschnitte_ausrechnen_heading_buttons_aktualisieren(active_tab)
         else:
+            ##print(active_tab)
             table_error_lable = ctk.CTkLabel(tab_system.tab(active_tab), text='save error - Falsche Eingabe in der Tabelle!!!', font=('Arial', 15, 'bold'), text_color='#5d6ae3', fg_color='transparent', height=10)
+            #table_error_lable.place(x=200, y=150)
+            #root.after(2000, table_error_lable.place_forget)
 
             table_error_lable.grid(row=2, column=0)
             root.after(3000, table_error_lable.grid_forget)
@@ -1540,6 +1881,8 @@ def normal_startup():
     def button_callback():
         find_entries_in_active_tab_right_column()
         print_entry_contents()
+
+
 
 
     tabs = {}
@@ -1557,6 +1900,8 @@ def normal_startup():
         print(current_fach)
 
         tabs[current_fach] = tab_system.add(current_fach)
+
+        #tab_system.add(current_fach)
 
         scr_noten_frame = ctk.CTkScrollableFrame(tab_system.tab((current_fach)), corner_radius=3, width=800, height=280)
         scr_noten_frame.grid(row=1, column=0, pady=0, padx=5)
@@ -1584,6 +1929,7 @@ def normal_startup():
                 vers_note_type_table_frame = ctk.CTkFrame(scr_noten_frame, corner_radius=0)
                 vers_note_type_table_frame.grid(row=0, column=m, padx=(0, 5), sticky='nw')
 
+                #table_frames[current_fach].append(vers_note_type_table_frame)
 
                 vers_note_type_tabelle_frame = ctk.CTkFrame(vers_note_type_table_frame)
                 vers_note_type_tabelle_frame.grid(row=1, column=0)
@@ -1592,6 +1938,7 @@ def normal_startup():
                 klassenarbeit_button.grid(row=0, column=0, pady=0, padx=0, sticky='news') #nwes
 
                 button_type_headings[current_fach].append(klassenarbeit_button)
+                #widgets_dict[alle_fächer[i]]["scr_noten_frames_list"] = scr_noten_frames_list
 
             #---------------------heading-Tabelle----------------------------
                 cell_num_heading = ctk.CTkEntry(vers_note_type_tabelle_frame, placeholder_text='', width=50, corner_radius=0,
@@ -1617,9 +1964,11 @@ def normal_startup():
                 table_entries = []
                 row_entries = []
                 anzahl = int(noten_dict[current_fach][counter_type])
+                ##print('anzahl',anzahl)
                 for i in range(anzahl):
                     num = i + 1
                     search_type = ''
+                    ##print(counter_type, 'counter type')
                     if counter_type == 'ka_counter':
                         search_type = 'Klassenarbeit '
                     elif counter_type == 'test_counter':
@@ -1628,8 +1977,11 @@ def normal_startup():
                         search_type = 'muendlich '
                     elif counter_type == 'prae_counter':
                         search_type = 'Praesentation '
+                    ##print('search type', search_type)
                     result = noten_dict[current_fach][(str(search_type) + str(num))]
+                    ##print('result', result)
                     sum += int(result)
+                    ##print('sum', sum)
 
                     cell_num_entry = ctk.CTkEntry(vers_note_type_tabelle_frame, placeholder_text=str(num), width=50, corner_radius=0,
                                                   border_width=0, border_color=('black', 'white'), justify="center")
@@ -1654,8 +2006,11 @@ def normal_startup():
                 entries[current_fach].append(table_entries)
 
                 if int(noten_dict[current_fach][counter_type]) != 0:
+                    ##print('sumausgabe', counter_type, sum)
                     durchschnitt = sum/int(noten_dict[current_fach][counter_type])
+                    ##print(durchschnitt)
                     durchschnitt = durchschnitt.__round__(3)
+                    ##print(durchschnitt)
                     sum = 0
                     klassenarbeit_button.configure(text=(text + ' Ø ' + str(durchschnitt)))
                 sum = 0
@@ -1669,6 +2024,7 @@ def normal_startup():
                     search_type = 'Abi muendlich'
 
                 needed = (search_type in noten_dict[current_fach]) or ('GFS' in noten_dict[current_fach])
+                ##print('needed', needed)
 
                 sonstiges_frame = ctk.CTkFrame(scr_noten_frame, fg_color='transparent', corner_radius=0, width=150)
                 sonstiges_frames[current_fach] = sonstiges_frame
@@ -1711,7 +2067,9 @@ def normal_startup():
                             text = 'Abi'
                         else:
                             text = 'GFS'
+                        ##print('search', search)
                         if abi_gfs[i] in noten_dict[current_fach]:
+                            ##print('is in', abi_gfs[i], current_fach)
                             type_entry = ctk.CTkEntry(sonstiges_tabelle_frame, placeholder_text='', width=50, corner_radius=0, border_width=0, border_color=('black', 'white'), justify="center")
                             type_entry.insert(0, text)
                             type_entry.configure(state="readonly")
@@ -1730,7 +2088,11 @@ def normal_startup():
                             sonstiges_frame.grid(row=0, column=m, padx=(0, 5), sticky='nw')
 
                         entries[current_fach].append(table_entries)
+    ##print('button type hedings dict', button_type_headings)
 
+    #button_to_change = (button_type_headings['Mathe'])[2] ###nur test für notenschnitt aktualsieren
+    #print('btc', button_to_change)
+    #button_to_change.configure(text='geänderter text')
 
 
     #update_notendarstellung()
@@ -1747,7 +2109,9 @@ def normal_startup():
         durchschnitt_liste = []
 
         for i in range(4):
+            ##print(i)
             typ = type_list[i]
+            ##print(typ)
             if typ == 'Klassenarbeit':
                 typ_counter = 'ka_counter'
                 text = 'Klassenarbeit'
@@ -1760,12 +2124,14 @@ def normal_startup():
             elif typ == 'Praesentation':
                 typ_counter = 'prae_counter'
                 text = 'Präsentation'
+                ##print('angekommen????????????')
             else:
                 typ_counter = None
                 text = None
 
             button_to_change = (button_type_headings[fach_to_update])[i]
 
+            ##print(typ_counter)
             noten_dict = json.load(open('noten.json'))
             anzahl_an_type = int(noten_dict[fach_to_update][typ_counter])  # wie viele test kas usw gibts
 
@@ -1778,8 +2144,11 @@ def normal_startup():
                 durchschnitt = all_result / anzahl_an_type
                 durchschnitt = durchschnitt.__round__(3)
                 button_to_change.configure(text=text + ' Ø ' + str(durchschnitt))
+                ##print('button aktualiseier')
             else:
+                # durchschnitt = '-'
                 button_to_change.configure(text=text)
+                ##print('zu wenig')
 
     #------------------------------------settings---------------------------------
 
@@ -1888,6 +2257,7 @@ def normal_startup():
     entry_text_link_3.grid(row=1, column=2, padx=10, pady=5)
     save_link_3_button.grid(row=2, column=2, padx=10, pady=5)
 
+    # Checkbox zum Anzeigen/Verstecken des Bearbeitungsframes
     def checkbox_event():
         ##print("checkbox toggled, current value:", check_var.get())
         state = check_var.get()
@@ -1902,6 +2272,8 @@ def normal_startup():
     head_frame.grid(row=0, padx=5, pady=5, sticky='nw')
     hauptmenue_frame.grid(row=1, padx=5, pady=5, sticky='nw')
 
+    #place_all_frames()
+#normal_startup()
 
 #-----------------------------dokumentation-Frame------------------------------
 
@@ -1910,12 +2282,15 @@ def normal_startup():
     dokumentation_text = """
  Dokumentation GradAlyzer version 0.1.1
  
+  https://jon141.github.io/Jonas-Kappel-GradAlyzer/
+
  Entwicklungsinformationen:\n\n\n
  Entwickler: Jonas T. Kappel
  Zeitraum: 22.06.2024 - 23.08.2024
  Programmiersprache: Python 3.6
  Module/Bibliotheken: tkinter, customtkinter, json, datetime, webbrowser, schedule, notifypy
  Codezeilen: 2222
+ offizielle customtikinter Dokumentation: https://customtkinter.tomschimansky.com/
  \n\n
  Kontakt: (Bugs melden)
  Email: jkappelix@gmail.com
@@ -1951,12 +2326,20 @@ def normal_startup():
     doku_textbox.tag_configure("heading", font=("Arial", 16, "bold"))
 
 
+    # Unterstrichen-Tag definieren
     doku_textbox.tag_configure("underline", font=("Arial", 12, "underline"))
 
+    # Wende die Tags auf bestimmte Textbereiche an
     doku_textbox.tag_add("heading", "2.0", "3.0")  # Macht "Entwicklungsinformationen" fett
+    #doku_textbox.tag_add("bold", "5.0", "5.21")
+    #doku_textbox.tag_add("underline", "11.0", "12.0")
 
+
+
+    # Setze den Text auf Read-Only
     doku_textbox.configure(state="disabled")
 
+    # Zeige die Textbox im Fenster
     doku_textbox.grid()
 
 call_first_start = None
@@ -1967,12 +2350,22 @@ try:
     #print(opend)
     print(user_dates_dict["open"])
     if opend == '0' or opend == 0:
+        #vertifizierung = input('Vertifizierungscode: ')
+        #if vertifizierung == '141':
+        #    first_start = True
+        #    #first_start()
         call_first_start = True
 
     else:
+        #normal_startup()
         call_first_start = False
 
 except:
+    print('expect')
+    #vertifizierung = input('Vertifizierungscode: ')
+    #if vertifizierung == '141':
+    #    first_start = True
+    #    #first_start()
     call_first_start = True
 
 
@@ -2002,6 +2395,24 @@ def vertifizierung():
             vertifizierungs_error_lable.grid(row=2)
             root.after(2000, vertifizierungs_error_lable.grid_forget)
 
+
+    #root.grid_rowconfigure(0, weight=1)
+    #root.grid_columnconfigure(0, weight=1)
+
+
+#    vertifizierungs_frame = ctk.CTkFrame(root, fg_color='#ceced6', border_color='black', border_width=1, corner_radius=1)#fg_color='transparent'
+#    vertifizierungs_frame.grid(columnspan=2, pady=250)
+#
+#    vertifizierungs_lable = ctk.CTkLabel(vertifizierungs_frame, font=('Arial', 20, 'bold'), text_color='#0d144f', text='Vertifizierungscode eingeben um first_start() auszuführen.')# \nVertifizierungscode ist die Lösung von 123*321.', )
+#    vertifizierungs_lable.grid(row=0, sticky='ns', pady=5, padx=5)
+#
+#    eingabe_frame = ctk.CTkFrame(vertifizierungs_frame)
+#    eingabe_frame.grid(pady=(10, 5))
+#
+#    vertifizierungs_entry = ctk.CTkEntry(eingabe_frame, height=35, placeholder_text='Vertifizierungscode', width=180, corner_radius=0, border_width=0, font=('Arial', 20))
+#    vertifizierungs_entry.grid(row=1, column=0)
+#    vertifizierungs_button = ctk.CTkButton(eingabe_frame, height=35, text='Eingabe', command=start_first_start, width=50, corner_radius=0, font=('Arial', 20))
+#    vertifizierungs_button.grid(row=1, column=1)
 
     vertifizierungs_lable = ctk.CTkLabel(root, text='Verifizierungscode eingeben:', height=35, font=('Arial', 20, 'bold'))
     vertifizierungs_lable.grid(row=0, columnspan=2, pady=(215, 0))
